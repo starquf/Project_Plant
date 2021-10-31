@@ -2,5 +2,7 @@ public enum TileType
 {
     NORMAL,
     WATER,
-    MIRROR
+    WATERLINE,
+    MIRROR,
+    FIELD
 }
