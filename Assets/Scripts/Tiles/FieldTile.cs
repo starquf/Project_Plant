@@ -10,6 +10,13 @@ public class FieldTile : Tile
 
     private NeedType needs;
 
+    private bool isBloom = false;
+
+    private void Awake()
+    {
+        GameManager.Instance.maxField++;
+    }
+
     private void Start()
     {
         plantSr = plant.GetComponent<SpriteRenderer>();
@@ -17,7 +24,7 @@ public class FieldTile : Tile
 
         plant.localScale = Vector3.zero;
 
-        GameManager.Instance.onGameClear += Bloom;
+        GameManager.Instance.onRefresh += CancelBloom;
     }
 
     private void Bloom()
@@ -26,10 +33,26 @@ public class FieldTile : Tile
         plant.DOScale(Vector3.one, 0.75f)
             .SetEase(Ease.OutBack);
 
+        isBloom = true;
+    }
+
+    private void CancelBloom()
+    {
+        if (isBloom)
+            GameManager.Instance.maxField++;
+
+        plantSr.enabled = false;
+        plant.localScale = Vector3.zero;
+
+        isBloom = false;
     }
 
     public void GetWater()
     {
-        GameManager.Instance.GameClear();
+        if (isBloom) return;
+
+        GameManager.Instance.FieldActivate();
+
+        Bloom();
     }
 }

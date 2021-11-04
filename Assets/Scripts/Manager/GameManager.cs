@@ -51,6 +51,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public TileHandler tileHandler = null;
 
+    public int maxField = 0;
+
 
     public void OnRefresh()
     {
@@ -58,13 +60,20 @@ public class GameManager : MonoBehaviour
         onRefreshAfter?.Invoke();
     }
 
-    public void GameClear()
+    public void FieldActivate()
     {
-        onGameClear?.Invoke();
+        maxField--;
+
+        if (maxField <= 0)
+        {
+            onGameClear?.Invoke();
+        }
     }
 
     public void Restart()
     {
+        print("Àç½ÃÀÛ");
+
         onRefresh = null;
         onRefreshAfter = null;
         onGameClear = null;
