@@ -14,16 +14,16 @@ public class FieldTile : Tile
 
     private void Awake()
     {
+        plantSr = plant.GetComponent<SpriteRenderer>();
+
+        plantSr.enabled = false;
+        plant.localScale = Vector3.zero;
+
         GameManager.Instance.maxField++;
     }
 
     private void Start()
     {
-        plantSr = plant.GetComponent<SpriteRenderer>();
-        plantSr.enabled = false;
-
-        plant.localScale = Vector3.zero;
-
         GameManager.Instance.onRefresh += CancelBloom;
     }
 
