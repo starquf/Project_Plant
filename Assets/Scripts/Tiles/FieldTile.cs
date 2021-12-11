@@ -15,6 +15,8 @@ public class FieldTile : Tile
 
     public List<Sprite> fruitSprs = new List<Sprite>();
 
+    private Tween plantTween;
+
     private void Awake()
     {
         plantSr = plant.GetComponent<SpriteRenderer>();
@@ -32,8 +34,10 @@ public class FieldTile : Tile
     private void Bloom(FruitType fruitType)
     {
         plantSr.enabled = true;
-        plant.DOScale(Vector3.one, 0.75f)
-            .SetEase(Ease.OutBack);
+
+        plantTween.Kill();
+        plantTween = plant.DOScale(Vector3.one, 0.75f)
+                        .SetEase(Ease.OutBack);
 
         switch (fruitType)
         {

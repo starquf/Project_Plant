@@ -29,10 +29,17 @@ public class TitleUIHandler : MonoBehaviour
         {
             MovePanel(-1920f);
         });
+
+        creditBtn.onClick.AddListener(() =>
+        {
+            MovePanel(1920f);
+        });
+
+        exitBtn.onClick.AddListener(() => Application.Quit());
     }
 
     private void MovePanel(float x)
     {
-        movePanel.DOLocalMoveX(x, 0.8f);
+        movePanel.DOLocalMoveX(x, 0.7f);
     }
 }

@@ -12,6 +12,8 @@ public class ClearUIHandler : MonoBehaviour
     public Button nextBtn;
     public Button homeBtn;
 
+    public List<ParticleSystem> fireworks = new List<ParticleSystem>();
+
     private void Start()
     {
         cg = GetComponent<CanvasGroup>();
@@ -39,6 +41,11 @@ public class ClearUIHandler : MonoBehaviour
 
     private void GameClear()
     {
+        for (int i = 0; i < fireworks.Count; i++)
+        {
+            fireworks[i].Play();
+        }
+
         Sequence seq = DOTween.Sequence()
             .AppendInterval(1f)
             .AppendCallback(() =>

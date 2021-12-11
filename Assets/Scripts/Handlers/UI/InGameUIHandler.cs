@@ -21,6 +21,15 @@ public class InGameUIHandler : MonoBehaviour
     {
         Init();
 
+        Action action = () => { };
+
+        action = () => 
+        {
+            SetFruitUI();
+            GameManager.Instance.onUpdateUI -= action;
+        };
+
+        GameManager.Instance.onUpdateUI += action;
         GameManager.Instance.onUpdateUI += UpdateUI;
 
         pauseBtn.onClick.AddListener(() => Pause(true));
@@ -50,14 +59,44 @@ public class InGameUIHandler : MonoBehaviour
         fruitUIDic.Add(FruitType.BANANA, fruitTxts[2]);
     }
 
+    private void SetFruitUI()
+    {
+        int value = 0;
+
+        foreach (var fruitType in fruitUIDic.Keys)
+        {
+            switch (fruitType)
+            {
+                case FruitType.APPLE:
+                    value = GameManager.Instance.appleCnt;
+                    break;
+
+                case FruitType.WATERMELON:
+                    value = GameManager.Instance.waterMelonCnt;
+                    break;
+
+                case FruitType.BANANA:
+                    value = GameManager.Instance.bananaCnt;
+                    break;
+            }
+
+            if (value <= 0)
+            {
+                fruitUIDic[fruitType].transform.parent.gameObject.SetActive(false);
+            }
+        }
+    }
+
     private void UpdateUI()
     {
         int value = 0;
 
         foreach (var fruitType in fruitUIDic.Keys)
         {
+            if (!fruitUIDic[fruitType].gameObject.activeInHierarchy)
+                continue;
+
             value = GameManager.Instance.fruitCountDic[fruitType];
-            print($"{fruitType} : {value}");
 
             if (value < 0)
             {
