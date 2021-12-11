@@ -4,5 +4,6 @@ public enum TileType
     WATER,
     WATERLINE,
     MIRROR,
-    FIELD
+    FIELD,
+    SUN
 }

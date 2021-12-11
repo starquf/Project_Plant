@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class FieldTile : Tile
 {
     public Transform plant;
     private SpriteRenderer plantSr;
 
-    private NeedType needs;
+    private FruitType fruitType;
 
-    private bool isBloom = false;
+    private NeedType currentNeed = NeedType.None;
+
+    public List<Sprite> fruitSprs = new List<Sprite>();
 
     private void Awake()
     {
@@ -18,41 +21,79 @@ public class FieldTile : Tile
 
         plantSr.enabled = false;
         plant.localScale = Vector3.zero;
-
-        GameManager.Instance.maxField++;
     }
 
     private void Start()
     {
         GameManager.Instance.onRefresh += CancelBloom;
+        GameManager.Instance.onCheckClear += CheckBloom;
     }
 
-    private void Bloom()
+    private void Bloom(FruitType fruitType)
     {
         plantSr.enabled = true;
         plant.DOScale(Vector3.one, 0.75f)
             .SetEase(Ease.OutBack);
 
-        isBloom = true;
+        switch (fruitType)
+        {
+            case FruitType.WATERMELON:
+                plantSr.sprite = fruitSprs[0];
+                break;
+
+            case FruitType.APPLE:
+                plantSr.sprite = fruitSprs[1];
+                break;
+
+            case FruitType.BANANA:
+                plantSr.sprite = fruitSprs[2];
+                break;
+        }
     }
 
     private void CancelBloom()
     {
-        if (isBloom)
-            GameManager.Instance.maxField++;
-
         plantSr.enabled = false;
         plant.localScale = Vector3.zero;
 
-        isBloom = false;
+        fruitType = FruitType.NONE;
+        currentNeed = NeedType.None;
     }
 
     public void GetWater()
     {
-        if (isBloom) return;
+        if (currentNeed.HasFlag(NeedType.WATER)) return;
 
-        GameManager.Instance.FieldActivate();
+        currentNeed |= NeedType.WATER;
+    }
 
-        Bloom();
+    public void GetSun()
+    {
+        if (currentNeed.HasFlag(NeedType.SUN)) return;
+
+        currentNeed |= NeedType.SUN;
+    }
+
+    private void CheckBloom()
+    {
+        if (currentNeed.HasFlag(NeedType.WATER))
+        {
+            fruitType = FruitType.WATERMELON;
+
+            if (currentNeed.HasFlag(NeedType.SUN))
+            {
+                fruitType = FruitType.BANANA;
+            }
+        }
+        else if (currentNeed.HasFlag(NeedType.SUN))
+        {
+            fruitType = FruitType.APPLE;
+        }
+
+        if (!fruitType.Equals(FruitType.NONE))
+        {
+            GameManager.Instance.FieldActivate(fruitType);
+            Bloom(fruitType);
+        }
     }
 }

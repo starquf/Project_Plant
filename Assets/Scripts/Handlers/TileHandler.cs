@@ -10,7 +10,7 @@ public class TileHandler : MonoBehaviour
     private LayerMask whatIsTile;
     private Vector3 target;
 
-    private bool canInteract = true;
+    public bool canInteract = true;
 
     private void Start()
     {

@@ -9,6 +9,8 @@ public class ClearUIHandler : MonoBehaviour
     private CanvasGroup cg;
 
     public Button retryBtn;
+    public Button nextBtn;
+    public Button homeBtn;
 
     private void Start()
     {
@@ -21,6 +23,18 @@ public class ClearUIHandler : MonoBehaviour
         GameManager.Instance.onGameClear += GameClear;
 
         retryBtn.onClick.AddListener(() => GameManager.Instance.Restart());
+        homeBtn.onClick.AddListener(() => GameManager.Instance.LoadScene("Title"));
+        nextBtn.onClick.AddListener(() =>
+        {
+            GameManager.Instance.stageIdx++;
+            GameManager.Instance.Restart();
+        });
+
+
+        if (GameManager.Instance.stageIdx >= 14)
+        {
+            nextBtn.gameObject.SetActive(false);
+        }
     }
 
     private void GameClear()

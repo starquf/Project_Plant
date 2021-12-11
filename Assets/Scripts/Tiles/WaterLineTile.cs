@@ -140,7 +140,7 @@ public class WaterLineTile : Tile
 
             for (int i = 0; i < lines.Count; i++)
             {
-                lines[i].DOFade(0.5f, 0.15f).SetEase(Ease.Linear);
+               lines[i].DOFade(0.5f, 0.15f).SetEase(Ease.Linear);
             }
         }
         else

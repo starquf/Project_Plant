@@ -1,10 +1,7 @@
 fileFormatVersion: 2
-guid: 199f4c10a79390445b2edc79430652c1
+guid: 0775faca760c27c46b89696ad9d84d1b
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: -7832214784768987486
-    second: apple_0
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -44,7 +41,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -104,28 +101,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: apple_0
-      rect:
-        serializedVersion: 2
-        x: 247
-        y: 186
-        width: 507
-        height: 627
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2ae284d66226e4390800000000000000
-      internalID: -7832214784768987486
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
