@@ -14,6 +14,8 @@ public class ClearUIHandler : MonoBehaviour
 
     public List<ParticleSystem> fireworks = new List<ParticleSystem>();
 
+    public GameObject clearSoundObj;
+
     private void Start()
     {
         cg = GetComponent<CanvasGroup>();
@@ -41,6 +43,8 @@ public class ClearUIHandler : MonoBehaviour
 
     private void GameClear()
     {
+        Instantiate(clearSoundObj, null);
+
         for (int i = 0; i < fireworks.Count; i++)
         {
             fireworks[i].Play();
@@ -54,6 +58,12 @@ public class ClearUIHandler : MonoBehaviour
                 cg.interactable = true;
             })
             .Append(cg.DOFade(1f, 1f));
-            //.Append();
+        //.Append();
+
+        if (GameManager.Instance.gameInfo.clearedStageIdx <= GameManager.Instance.stageIdx)
+        {
+            GameManager.Instance.gameInfo.clearedStageIdx = GameManager.Instance.stageIdx + 1;
+            GameManager.Instance.SaveGameInfo();
+        }
     }
 }

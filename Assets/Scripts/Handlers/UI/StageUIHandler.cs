@@ -28,6 +28,9 @@ public class StageUIHandler : MonoBehaviour
                 GameManager.Instance.stageIdx = a;
                 GameManager.Instance.LoadScene("InGame");
             });
+
+            if (i > GameManager.Instance.gameInfo.clearedStageIdx)
+                stageBtns[i].gameObject.SetActive(false);
         }
     }
 }

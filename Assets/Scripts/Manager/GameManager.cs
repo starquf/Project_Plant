@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
@@ -45,8 +46,14 @@ public class GameManager : MonoBehaviour
         fruitCountDic.Add(FruitType.WATERMELON, 0);
         fruitCountDic.Add(FruitType.APPLE, 0);
         fruitCountDic.Add(FruitType.BANANA, 0);
+
+        Init();
     }
     #endregion
+
+    private readonly string fileName = "gameinfo.txt";
+    private string path;
+    public GameInfoVO gameInfo;
 
     public CanvasGroup loadImg;
     private float changeDur = 1f;
@@ -68,6 +75,28 @@ public class GameManager : MonoBehaviour
     public int bananaCnt = 0;
 
     public int stageIdx = 0;
+
+    public bool isSceneChanging = false;
+
+    private void Init()
+    {
+        Screen.SetResolution(1920, 1080, true);
+
+        gameInfo = new GameInfoVO();
+
+        path = Path.Combine(Application.persistentDataPath, fileName);
+
+        if (File.Exists(path))
+        {
+            LoadGameInfo();
+        }
+        else
+        {
+            SaveGameInfo();
+        }
+    }
+
+    
 
     public void OnRefresh()
     {
@@ -119,9 +148,6 @@ public class GameManager : MonoBehaviour
 
     public void Restart()
     {
-        print("재시작");
-        ResetScene();
-
         LoadScene("InGame");
     }
 
@@ -133,11 +159,13 @@ public class GameManager : MonoBehaviour
         onGameClear = null;
         onUpdateUI = null;
 
+        PoolManager.ResetPool();
         DOTween.KillAll();
     }
 
     public void LoadScene(string sceneName)
     {
+        isSceneChanging = true;
         loadImg.blocksRaycasts = true;
 
         loadImg.DOFade(1f, changeDur)
@@ -165,12 +193,41 @@ public class GameManager : MonoBehaviour
             {
                 op.allowSceneActivation = true;
 
+                yield return null;
+
                 loadImg.blocksRaycasts = false;
                 loadImg.DOFade(0f, changeDur - 0.1f)
                     .SetEase(Ease.Linear);
 
+                isSceneChanging = false;
+
                 yield break;
             }
         }
+    }
+
+    public void LoadGameInfo()
+    {
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+
+            gameInfo = JsonUtility.FromJson<GameInfoVO>(json);
+        }
+    }
+
+    [ContextMenu("현재 정보 저장하기")]
+    public void SaveGameInfo()
+    {
+        string json = JsonUtility.ToJson(gameInfo);
+
+        File.WriteAllText(path, json);
+    }
+
+    [ContextMenu("현재 정보 초기화 (주의)")]
+    public void ResetGameInfo()
+    {
+        gameInfo = new GameInfoVO();
+        SaveGameInfo();
     }
 }

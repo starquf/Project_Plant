@@ -9,6 +9,9 @@ public class InGameUIHandler : MonoBehaviour
     public List<Text> fruitTxts = new List<Text>();
     private Dictionary<FruitType, Text> fruitUIDic;
 
+    public Text stageInfoText;
+
+    [Header("일시정지")]
     public Button pauseBtn;
     public CanvasGroup pauseGroup;
 
@@ -26,6 +29,7 @@ public class InGameUIHandler : MonoBehaviour
         action = () => 
         {
             SetFruitUI();
+            SetStageInfo();
             GameManager.Instance.onUpdateUI -= action;
         };
 
@@ -40,6 +44,7 @@ public class InGameUIHandler : MonoBehaviour
 
         Pause(false);
     }
+
 
     private void Pause(bool enable)
     {
@@ -57,6 +62,11 @@ public class InGameUIHandler : MonoBehaviour
         fruitUIDic.Add(FruitType.WATERMELON, fruitTxts[0]);
         fruitUIDic.Add(FruitType.APPLE, fruitTxts[1]);
         fruitUIDic.Add(FruitType.BANANA, fruitTxts[2]);
+    }
+
+    private void SetStageInfo()
+    {
+        stageInfoText.text = $"STAGE {(GameManager.Instance.stageIdx + 1).ToString("00")}";
     }
 
     private void SetFruitUI()
